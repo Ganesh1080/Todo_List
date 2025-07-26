@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Professional Todo List | Task Manager</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
+            <div class="container-fluid">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <div class="brand-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <span class="brand-text">TaskFlow Pro</span>
+                </a>
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <div class="navbar-nav ms-auto">
+                        <div class="nav-item">
+                            <span class="nav-link task-counter">
+                                <i class="bi bi-list-task"></i>
+                                <span id="taskCount">0</span> Active Tasks
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+       
+        <!-- Main Container -->
+        <div class="container p-4">
+            <!-- Header Section -->
+            <div class="header-section mb-4 text-center">
+                <h1 class="main-title">Task Management Dashboard</h1>
+                <p class="main-subtitle">Stay organized and boost your productivity</p>
+                <button type="button" class="btn btn-primary btn-lg add-task-btn" onclick="showAddTaskModal()">
+                    <i class="bi bi-plus-circle"></i> Add New Task
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="stats-card active-tasks">
+                        <div class="stats-icon">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 id="activeTasksCount">0</h3>
+                            <p>Active Tasks</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card completed-tasks">
+                        <div class="stats-icon">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 id="completedTasksCount">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card total-tasks">
+                        <div class="stats-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 id="totalTasksCount">0</h3>
+                            <p>Total Tasks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Section -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Active Tasks -->
+                    <div class="task-section mb-4">
+                        <div class="section-header">
+                            <h4><i class="bi bi-list-task"></i> Active Tasks</h4>
+                            <div class="section-badge" id="activeBadge">0</div>
+                        </div>
+                        <div class="card task-card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table task-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Task</th>
+                                                <th>Responsible</th>
+                                                <th>Due Date</th>
+                                                <th>Priority</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="activeTasksBody">
+                                            <tr>
+                                                <td colspan="6" class="no-tasks">
+                                                    <div class="empty-state">
+                                                        <i class="bi bi-clipboard-x"></i>
+                                                        <p>No active tasks yet. Add your first task!</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>    
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Progress Circle -->
+                    <div class="progress-section mb-4">
+                        <div class="card progress-card">
+                            <div class="card-body text-center">
+                                <h5>Progress Overview</h5>
+                                <div class="progress-circle" id="progressCircle">
+                                    <div class="progress-text">
+                                        <span id="progressPercent">0%</span>
+                                        <small>Completed</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Tasks Section -->
+            <div class="task-section completed-section">
+                <div class="section-header">
+                    <h4><i class="bi bi-check-circle-fill"></i> Completed Tasks</h4>
+                    <div class="section-badge completed-badge" id="completedBadge">0</div>
+                </div>
+                <div class="card task-card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table task-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Task</th>
+                                        <th>Responsible</th>
+                                        <th>Completed On</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="completedTasksBody">
+                                    <tr>
+                                        <td colspan="5" class="no-tasks">
+                                            <div class="empty-state">
+                                                <i class="bi bi-trophy"></i>
+                                                <p>No completed tasks yet. Complete your first task!</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>    
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Task Modal -->
+        <div class="modal fade" id="addTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <form id="taskInputForm">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <i class="bi bi-plus-circle"></i> Add New Task
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="addTaskTextArea" class="form-label">Task Description</label>
+                                    <textarea class="form-control" id="addTaskTextArea" name="taskDescription" rows="3" placeholder="Enter your task description..."></textarea>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="addResponsiblePerson" class="form-label">Responsible Person</label>
+                                    <input type="text" class="form-control" id="addResponsiblePerson" name="taskResponsiblePerson" placeholder="Enter responsible person's name">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="addETA" class="form-label">Due Date & Time</label>
+                                    <input type="datetime-local" class="form-control" id="addETA" name="taskETA">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="addPriority" class="form-label">Priority Level</label>
+                                    <select class="form-select" id="addPriority" name="taskPriority">
+                                        <option value="low">Low Priority</option>
+                                        <option value="medium" selected>Medium Priority</option>
+                                        <option value="high">High Priority</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="addTask()">
+                                <i class="bi bi-plus-circle"></i> Add Task
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Edit Task Modal -->
+        <div class="modal fade" id="updateTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <form id="taskUpdateForm">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <i class="bi bi-pencil-square"></i> Edit Task
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="editTaskTextArea" class="form-label">Task Description</label>
+                                    <textarea class="form-control" id="editTaskTextArea" name="taskDescription" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="editResponsiblePerson" class="form-label">Responsible Person</label>
+                                    <input type="text" class="form-control" id="editResponsiblePerson" name="taskResponsiblePerson">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="editETA" class="form-label">Due Date & Time</label>
+                                    <input type="datetime-local" class="form-control" id="editETA" name="taskETA">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="editPriority" class="form-label">Priority Level</label>
+                                    <select class="form-select" id="editPriority" name="taskPriority">
+                                        <option value="low">Low Priority</option>
+                                        <option value="medium">Medium Priority</option>
+                                        <option value="high">High Priority</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" id="editIndex" name="taskIndex">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="updateTask()">
+                                <i class="bi bi-check-circle"></i> Update Task
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
